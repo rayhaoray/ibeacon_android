@@ -39,6 +39,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sessionm.api.SessionM;
+
 /**
  * Activity for scanning and displaying available Bluetooth LE devices.
  */
@@ -83,6 +85,12 @@ public class DeviceScanActivity extends ListActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        SessionM.getInstance().onActivityStart(this);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         if (!mScanning) {
@@ -115,7 +123,7 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        SessionM.getInstance().onActivityResume(this);
         // Ensures Bluetooth is enabled on the device. If Bluetooth is not
         // currently enabled,
         // fire an intent to display a dialog asking the user to grant
@@ -147,8 +155,15 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        SessionM.getInstance().onActivityPause(this);
         scanLeDevice(false);
         mLeDeviceListAdapter.clear();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SessionM.getInstance().onActivityStop(this);
     }
 
     @Override
@@ -329,6 +344,9 @@ public class DeviceScanActivity extends ListActivity {
                                     Log.d("log", "Device" + device);
                                     Log.d("log",
                                             "ROWDATA: " + bytesToHex(scanRecord));
+                                    if(rssi > -50){
+                                        SessionM.getInstance().logAction("daily visit");
+                                    }
                                     mLeDeviceListAdapter.addDevice(device);
                                     mLeDeviceListAdapter.addUUID(uuid);
                                     mLeDeviceListAdapter.addRSSI(rssi);
