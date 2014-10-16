@@ -71,7 +71,7 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        SessionM.getInstance().onActivityStart(this);
+        com.sessionm.api.ext.SessionM.getInstance().onActivityStart(this);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SessionM.getInstance().onActivityResume(this);
+        com.sessionm.api.ext.SessionM.getInstance().onActivityResume(this);
         // Ensures Bluetooth is enabled on the device. If Bluetooth is not
         // currently enabled,
         // fire an intent to display a dialog asking the user to grant
@@ -139,7 +139,7 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SessionM.getInstance().onActivityPause(this);
+        com.sessionm.api.ext.SessionM.getInstance().onActivityPause(this);
         scanLeDevice(false);
         mLeDeviceListAdapter.clear();
     }
@@ -147,7 +147,8 @@ public class DeviceScanActivity extends ListActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        SessionM.getInstance().onActivityStop(this);
+        com.sessionm.api.ext.SessionM.getInstance().onActivityStop(this);
+        //SessionM.getInstance().onActivityStop(this);
     }
 
     @Override
